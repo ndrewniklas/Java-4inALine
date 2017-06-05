@@ -47,7 +47,7 @@ public class FourInALine {
 			first = BOT;
 		thinkTime = ui.thinkTime();
 		gameloop();
-
+		ui.exit();
 	}
 
 	/**
