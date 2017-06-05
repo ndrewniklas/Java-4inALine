@@ -24,6 +24,8 @@ public class Board {
 	 * 
 	 */
 	public Board() {
+		board = new char[8][8];
+		
 		myMove = new Position(' ', 0);
 		for (int r = 0; r < board.length; r++) {
 			for (int c = 0; c < board.length; c++) {
@@ -34,6 +36,8 @@ public class Board {
 	}
 
 	public Board(Board other) {
+		board = new char[8][8];
+		
 		myMove = other.getMove();
 		for (int r = 0; r < board.length; r++) {
 			for (int c = 0; c < board.length; c++) {
@@ -59,23 +63,20 @@ public class Board {
 		return myMove;
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param piece
-	 * @return
-	 */
 	public boolean setPiece(char x, int y, char piece) {
-		int ix = Character.getNumericValue(Character.toUpperCase(x));
+		int ix = Character.toUpperCase(x) - 65;
 		y -= 1;
-		if (checkBounds(ix, y) && board[ix][y] == EMPTY) {
-			board[ix][y] = piece;
-			return true;
-		}else {
-			return false;
+		if (isEmpty(ix, y)) {
+			if (checkBounds(ix, y)) {
+				board[ix][y] = piece;
+				return true;
+			} else {
+				return false;
+			}
 		}
+		return false;
 	}
-	
+
 	public boolean setPiece(int x, int y, char piece) {
 		if (checkBounds(x, y) && board[x][y] == EMPTY) {
 			board[x][y] = piece;
@@ -86,7 +87,7 @@ public class Board {
 	}
 	
 	public char getPiece(char x, int y){
-		int ix = Character.getNumericValue(Character.toUpperCase(x));
+		int ix = Character.toUpperCase(x) - 65;
 		if (checkBounds(ix, y)) {
 			return board[ix][y];
 		}else {
@@ -247,7 +248,7 @@ public class Board {
 	 * @return
 	 */
 	public boolean checkWinCondition(char x, int y) {
-		int ix = Character.getNumericValue(Character.toUpperCase(x));
+		int ix = Character.toUpperCase(x) - 65;
 		y -= 1;
 		return (checkHorizontal(ix, y) == true || checkVertical(ix, y) == true);
 	}

@@ -18,7 +18,7 @@ public class UserInterface {
 	 * @return
 	 */
 	public char welcome() {
-		char answer;
+		char answer = 'm';
 		System.out.println("Welcome to 4 in a Line\nWould you like to go first? ");
 		answer = sc.nextLine().toLowerCase().charAt(0);
 		while (answer != 'y' && answer != 'n') {

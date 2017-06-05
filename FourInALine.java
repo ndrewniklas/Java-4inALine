@@ -15,9 +15,9 @@ public class FourInALine {
 	final char HUMAN = 'O';
 	char first;
 	int thinkTime;
-	AI ai;
 	UserInterface ui;
 	Board game;
+	AI ai;
 
 	/**
 	 * @param args
@@ -30,6 +30,9 @@ public class FourInALine {
 	 * 
 	 */
 	public FourInALine() {
+		ui = new UserInterface();
+		game = new Board();
+		ai = new AI();
 		start();
 	}
 
@@ -37,8 +40,7 @@ public class FourInALine {
 	 * 
 	 */
 	private void start() {
-		game = new Board();
-		ai = new AI();
+		
 		char result = ui.welcome();
 
 		if (result == 'y')
@@ -56,6 +58,8 @@ public class FourInALine {
 	 */
 	private void gameloop() {
 		while (true) {
+			System.out.println(game.toString());
+			
 			if (BOT == first) {
 				// Player 1 is
 				boolean botWin = botTakeTurn(BOT);
