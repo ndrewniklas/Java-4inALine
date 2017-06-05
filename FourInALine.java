@@ -58,20 +58,20 @@ public class FourInALine {
 		while (true) {
 			if (BOT == first) {
 				// Player 1 is
-				boolean botWin = takeTurn(BOT);
+				boolean botWin = botTakeTurn(BOT);
 				if (botWin) break;
 				
 				// Player 2 is
-				boolean plrWin = takeTurn(HUMAN);
+				boolean plrWin = plrTakeTurn(HUMAN);
 				if (plrWin) break;
 				
 			} else {
 				// Player 1 is Human
-				boolean plrWin = takeTurn(HUMAN);
+				boolean plrWin = plrTakeTurn(HUMAN);
 				if (plrWin) break;
 				
 				// Player 2 is Bot
-				boolean botWin = takeTurn(BOT);
+				boolean botWin = botTakeTurn(BOT);
 				if (botWin) break;
 			}
 		}
@@ -82,23 +82,32 @@ public class FourInALine {
 	 * @param bOT2
 	 * @return
 	 */
-	private boolean takeTurn(char player) {
-		Position pos;
-		if (player == HUMAN) {
-			pos = ui.enterPosition();
-		}else {
-			pos = ai.search(game);
-		}
+	private boolean plrTakeTurn(char player) {
+		Position pos = ui.enterPosition();
+		
 		while (!game.setPiece(pos.getX(), pos.getY(), player)) {
 			System.out.println("Not a legal move!\n");
 			pos = ui.enterPosition();
 		}
 		System.out.println(game);
 		System.out.println("Score:" + game.calculateScore());
-		if (game.checkWinCondition(pos.getX(), pos.getY()) == 1) {
+		if (game.checkWinCondition(pos.getX(), pos.getY())) {
 			System.out.println("Player wins the game!");
 			return true;
-		}else if(game.checkWinCondition(pos.getX(), pos.getY()) == 2){
+		}
+		return false;
+	}
+	
+	private boolean botTakeTurn(char player) {
+		Position pos = ai.search(game);
+		
+		while (!game.setPiece(pos.getX(), pos.getY(), player)) {
+			System.out.println("Not a legal move!\n");
+			pos = ui.enterPosition();
+		}
+		System.out.println(game);
+		System.out.println("Score:" + game.calculateScore());
+		if(game.checkWinCondition(pos.getX(), pos.getY())){
 			System.out.println("Computer wins the game!");
 			return true;
 		}
