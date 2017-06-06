@@ -165,7 +165,7 @@ public class Board {
 		int inARow = 1, inACol = 1, totalRow = 1, totalCol = 1;
 		//Horizontal Count
 		if (row < SIZE - 3) {
-			for (int r = row + 1; r < row + 3; ++r) {
+			for (int r = row + 1; r <= row + 3; ++r) {
 				char nextPiece = board[r][col];
 				if (nextPiece == plr || nextPiece == EMPTY) {
 					if (nextPiece == plr) {
@@ -186,7 +186,7 @@ public class Board {
 		}
 		//Vertical Count
 		if (col < SIZE - 3) {
-			for (int c = col + 1; c < col + 3; ++c) {
+			for (int c = col + 1; c <= col + 3; ++c) {
 				char nextPiece = board[row][c];
 				if (nextPiece == plr || nextPiece == EMPTY) {
 					if (nextPiece == plr) {
@@ -205,9 +205,8 @@ public class Board {
 				}
 			}
 		}
-		if (inARow == 4 || inACol == 4) score += 10000;
+		if (inARow == 4 || inACol == 4) score += 100000;
 		if (inARow == 3) {
-			
 			//inARow will be 3 if i,i+1,and i+2 == 'X' AND i+3 == EMPTY which means that the right side is open
 			if (row - 1 >= 0 && board[row-1][col] == EMPTY) {
 				//The player would have to choose between blocking i-1 or i+3 and the bot
@@ -218,9 +217,13 @@ public class Board {
 				//Three is a row with only 1 opening, still good but not game winning
 				score += 1000;
 			}
-		}
-		else if (inACol == 3) {
-			
+		} else {
+                    	if (totalRow > 0) {
+                            if (totalRow == 3) score += 1000;
+                            else score += totalRow * 10;
+			}
+                }
+		if (inACol == 3) {
 			//inARow will be 3 if i,i+1,and i+2 == 'X' AND i+3 == EMPTY which means that the right side is open
 			if (col - 1 >= 0 && board[row][col-1] == EMPTY) {
 				//The player would have to choose between blocking i-1 or i+3 and the bot
@@ -233,12 +236,8 @@ public class Board {
 			}
 		}
 		else {
-			if (totalRow > 0) {
-				if (totalRow == 3) score += 100;
-				else score += totalRow * 10;
-			}
 			if (totalCol > 0) {
-				if (totalCol == 3) score += 100;
+				if (totalCol == 3) score += 1000;
 				else score += totalCol * 10;
 			}
 		}
