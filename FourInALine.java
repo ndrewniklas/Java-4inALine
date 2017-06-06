@@ -57,18 +57,22 @@ public class FourInALine {
 	 * @param ui2
 	 */
 	private void gameloop() {
+            int turn = 1;
 		while (true) {
 			System.out.println(game.toString());
 			
 			if (BOT == first) {
 				// Player 1 is
-				boolean botWin = botTakeTurn(BOT);
+                               // boolean botWin = plrTakeTurn(BOT);
+                                boolean botWin = botTakeTurn(BOT);
 				if (botWin) break;
 				
 				// Player 2 is
 				boolean plrWin = plrTakeTurn(HUMAN);
 				if (plrWin) break;
-				
+                                
+                                System.out.println("Turn " + turn + " Score:" + game.calculateScore());
+                                turn++;
 			} else {
 				// Player 1 is Human
 				boolean plrWin = plrTakeTurn(HUMAN);
@@ -77,6 +81,9 @@ public class FourInALine {
 				// Player 2 is Bot
 				boolean botWin = botTakeTurn(BOT);
 				if (botWin) break;
+                                
+                                System.out.println("Turn " + turn + " Score:" + game.calculateScore());
+                                turn++;
 			}
 		}
 
@@ -89,13 +96,12 @@ public class FourInALine {
 	private boolean plrTakeTurn(char player) {
 		Position pos = ui.enterPosition();
 		
-		while (!game.setPiece(pos.getX(), pos.getY(), player)) {
+		while (!game.setPiece(pos.getX(), pos.getY()-1, player)) {
 			System.out.println("Not a legal move!\n");
 			pos = ui.enterPosition();
 		}
 		System.out.println(game);
-		System.out.println("Score:" + game.calculateScore());
-		if (game.checkWinCondition(pos.getX(), pos.getY())) {
+		if (game.checkWinCondition(pos.getX(), pos.getY()-1)) {
 			System.out.println("Player wins the game!");
 			return true;
 		}
@@ -104,13 +110,13 @@ public class FourInALine {
 	
 	private boolean botTakeTurn(char player) {
 		Position pos = ai.search(game);
-		
-		while (!game.setPiece(pos.getX(), pos.getY(), player)) {
+                System.out.println((int)pos.getX());
+		game.setPiece(pos.getX(), pos.getY(), player);
+		/*while (!game.setPiece(pos.getX(), pos.getY(), player)) {
 			System.out.println("Not a legal move!\n");
 			pos = ui.enterPosition();
-		}
+		}*/
 		System.out.println(game);
-		System.out.println("Score:" + game.calculateScore());
 		if(game.checkWinCondition(pos.getX(), pos.getY())){
 			System.out.println("Computer wins the game!");
 			return true;

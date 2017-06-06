@@ -26,7 +26,7 @@ public class Board {
 	public Board() {
 		board = new char[8][8];
 		
-		myMove = new Position(' ', 0);
+		myMove = new Position('A', 0);
 		for (int r = 0; r < board.length; r++) {
 			for (int c = 0; c < board.length; c++) {
 				board[r][c] = EMPTY;
@@ -65,7 +65,7 @@ public class Board {
 
 	public boolean setPiece(char x, int y, char piece) {
 		int ix = Character.toUpperCase(x) - 65;
-		y -= 1;
+		//y -= 1;
 		if (isEmpty(ix, y)) {
 			if (checkBounds(ix, y)) {
 				board[ix][y] = piece;
@@ -134,19 +134,23 @@ public class Board {
 	 */
 	public float calculateScore() {
 		float score = 0;
+                int countBot = 0, countHu = 0;
 		for (int i = 0; i < SIZE; ++i) {
 			for (int j = 0; j < SIZE; ++j) {
 				char piece = board[i][j];
 				if (piece == BOT) { //Found the CPU piece
 					//Compute score for the CPU's pieces, add to total
 					score += computePlrScore(piece, i, j);
+                                        countBot++;
 				}
 				else if (piece == HUMAN) { //Found the PLR piece
 					//Compute score for PLR's pieces, subtract from total
 					score -= computePlrScore(piece, i, j);
+                                        countHu++;
 				}
 			}
 		}
+                //System.out.println("DEBUG: " + countBot + " - " + countHu + " - " + score);
 		return score;
 	}
 
@@ -161,7 +165,7 @@ public class Board {
 		int inARow = 1, inACol = 1, totalRow = 1, totalCol = 1;
 		//Horizontal Count
 		if (row < SIZE - 3) {
-			for (int r = row + 1; r <= row + 3; ++r) {
+			for (int r = row + 1; r < row + 3; ++r) {
 				char nextPiece = board[r][col];
 				if (nextPiece == plr || nextPiece == EMPTY) {
 					if (nextPiece == plr) {
@@ -182,7 +186,7 @@ public class Board {
 		}
 		//Vertical Count
 		if (col < SIZE - 3) {
-			for (int c = col + 1; c <= col + 3; ++c) {
+			for (int c = col + 1; c < col + 3; ++c) {
 				char nextPiece = board[row][c];
 				if (nextPiece == plr || nextPiece == EMPTY) {
 					if (nextPiece == plr) {
@@ -195,8 +199,8 @@ public class Board {
 					}
 				}
 				else { // Found player piece
-					inARow = 0;
-					totalRow = 0;
+					inACol = 0;
+					totalCol = 0;
 					break; //This block is useless since it is being blocked off
 				}
 			}
@@ -212,7 +216,7 @@ public class Board {
 			}
 			else {
 				//Three is a row with only 1 opening, still good but not game winning
-				score += 500;
+				score += 1000;
 			}
 		}
 		else if (inACol == 3) {
@@ -225,7 +229,7 @@ public class Board {
 			}
 			else {
 				//Three is a row with only 1 opening, still good but not game winning
-				score += 500;
+				score += 1000;
 			}
 		}
 		else {
@@ -248,8 +252,8 @@ public class Board {
 	 * @return
 	 */
 	public boolean checkWinCondition(char x, int y) {
-		int ix = Character.toUpperCase(x) - 65;
-		y -= 1;
+		int ix = (int)(Character.toUpperCase(x) - 65);
+		//y -= 1;
 		return (checkHorizontal(ix, y) == true || checkVertical(ix, y) == true);
 	}
 
@@ -269,7 +273,7 @@ public class Board {
 			end--;
 		}
 		int count = 0;
-		for (int i = start; i < end; ++i) {
+		for (int i = start; i <= end; ++i) {
 			if (board[x][i] == piece) {
 				count++;
 			}
@@ -299,7 +303,7 @@ public class Board {
 			end--;
 		}
 		int count = 0;
-		for (int i = start; i < end; ++i) {
+		for (int i = start; i <= end; ++i) {
 			if (board[i][y] == piece) {
 				count++;
 			}

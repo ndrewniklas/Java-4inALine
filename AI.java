@@ -23,14 +23,15 @@ public class AI {
 	public Position search(Board current) {
 		int depth = 1;
 		float v;
-		while (depth <= 4) 
+		while (depth <= 5) 
 		{
 			v = MaxValue(current, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, depth);
-			if (v >= 5000) 	return current.getMove();
+			if (v >= 5000) 	return currMove;
 			depth++;
 		}
+                
 		timerFlag = false;
-		return current.getMove();
+		return currMove;
 	}
 
 	/**
@@ -55,10 +56,9 @@ public class AI {
 				Board temp = new Board(currBoard);
 				if (temp.isEmpty(i,j)) {
 					temp.setPiece(i, j, 'X');
-					temp.setMyMove(new Position((char) (i+65), j));
+					temp.setMyMove(new Position((char)(i+65), j));
 					v = Math.max(v, MinValue(temp, alpha, beta, depth - 1));
 					if (v >= beta) {
-						currMove = currBoard.getMove();
 						return v;
 					}
 					else {
@@ -93,9 +93,8 @@ public class AI {
 				if (temp.isEmpty(i,j)) {
 					temp.setPiece(i, j, 'O');
 					temp.setMyMove(new Position((char) (i+65), j));
-					v =Math.min(v, MaxValue(temp, alpha, beta, depth - 1));
+					v = Math.min(v, MaxValue(temp, alpha, beta, depth - 1));
 					if (v <= alpha) {
-						currMove = currBoard.getMove();
 						return v;
 					}
 					else {

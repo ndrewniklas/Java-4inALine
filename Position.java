@@ -11,8 +11,8 @@ package connect4;
  */
 public class Position {
 
-	private char x;
-	private int y;
+	private char x = 'A';
+	private int y = 0;
 
 	
 	/**
@@ -34,6 +34,8 @@ public class Position {
 	public int getY() {
 		return y;
 	}
-	
-	
+	@Override
+	public String toString(){
+            return "(" + x + "," + y + ")";
+        }
 }
